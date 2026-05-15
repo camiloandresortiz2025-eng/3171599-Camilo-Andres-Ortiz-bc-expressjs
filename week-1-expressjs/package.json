@@ -1,0 +1,16 @@
+{
+  "name": "catering-elite-semana01-expressjs",
+  "version": "1.0.0",
+  "description": "Procesador de datos — Servicio de Catering con Node.js + TypeScript",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc --noEmit",
+    "start": "node dist/src/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.21",
+    "tsx": "4.19.4",
+    "typescript": "5.8.3"
+  }
+}
