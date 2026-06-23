@@ -1,0 +1,40 @@
+// Como: Define los dos modelos del dominio catering con relación 1:N (Menu → Event)
+// Para: Generar el cliente Prisma tipado y las migraciones SQL versionadas automáticamente
+// Impacto: Cambios en el modelo se propagan al cliente TypeScript y a la BD mediante migraciones reproducibles
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Entidad secundaria: catálogo de menús ofrecidos por el servicio de catering
+model Menu {
+  id             Int      @id @default(autoincrement())
+  name           String   @unique                      // Nombre único del menú (ej: "Buffet Internacional")
+  description    String
+  category       String                               // desayuno | almuerzo | cena | cocktail | brunch
+  pricePerPerson Float                               // Precio base por comensal en COP
+  available      Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  events         Event[]                             // Un menú puede aplicarse a muchos eventos
+}
+
+// Entidad principal: eventos de catering contratados por clientes
+model Event {
+  id             Int      @id @default(autoincrement())
+  name           String                              // Nombre del evento (ej: "Boda García")
+  date           DateTime                            // Fecha y hora del evento
+  location       String                              // Lugar de celebración
+  guestCount     Int                                 // Número de comensales confirmados
+  status         String   @default("pending")        // pending | confirmed | cancelled | completed
+  totalPrice     Float                               // Calculado: guestCount * menu.pricePerPerson
+  menuId         Int
+  menu           Menu     @relation(fields: [menuId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
