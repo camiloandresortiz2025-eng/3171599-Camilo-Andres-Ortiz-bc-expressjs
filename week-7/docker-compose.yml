@@ -1,0 +1,16 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: catering_mongo_auth
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: bootcamp
+      MONGO_INITDB_ROOT_PASSWORD: bootcamp123
+      MONGO_INITDB_DATABASE: catering_auth_dev
+    ports:
+      - "27017:27017"
+    volumes:
+      - catering_mongo_auth_data:/data/db
+
+volumes:
+  catering_mongo_auth_data:
